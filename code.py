@@ -87,7 +87,12 @@ if menu == "Filter Players":
     filtered_df = fifa_data[(fifa_data[attribute] >= val_range[0]) & (fifa_data[attribute] <= val_range[1])]
     
     st.write(f"Found {len(filtered_df)} players matching your criteria.")
-    st.dataframe(filtered_df[["Known As", "Full Name", "Nationality", "Club", attribute]].sort_values(by=attribute, ascending=False))
+    # Replace line 90 with this safe version:
+desired_cols = ["Known As", "Full Name", "Nationality", "Club", attribute]
+# This only selects columns that actually exist in the file
+existing_cols = [c for c in desired_cols if c in filtered_df.columns]
+
+st.dataframe(filtered_df[existing_cols].sort_values(by=attribute, ascending=False))
 
 # -----------------------------
 # 2. Top 5 Players
